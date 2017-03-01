@@ -5,14 +5,12 @@ class Bloom {
     private $size;
     private $runs;
 
-    function __construct($s, $r) {
-        $this->size = $s;
-        $this->arr = new SplFixedArray($s);
-        $this->runs = $r;
-    }
-
-    function getSize() {
-        return $this->size;
+    function __construct($num_items, $false_per) {
+        $this->size = ceil(-$num_items*log($false_per) / pow(log(2), 2));
+        $this->runs = ceil(($this->size/$num_items) * log(2));
+        $this->arr = new SplFixedArray($this->size);
+        //$this->size = $s;
+        //$this->runs = $r;
     }
 
     private function hash($thing, $seed) {
@@ -34,6 +32,18 @@ class Bloom {
             if ($this->arr[$result] == 0) return 0;
             else return 1;
         }
+    }
+
+    function show_list() {
+        print_r($this->arr);
+    }
+
+    function get_size() {
+        return $this->size;
+    }
+
+    function get_runs() {
+        return $this->runs;
     }
 }
 

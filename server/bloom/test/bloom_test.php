@@ -1,10 +1,6 @@
 <?php
 require_once('../bloom.php');
-$foo = new Bloom(20, 2);
-$foo->add("hi");
-$foo->add("there");
-echo $foo->lookup("boop");
-echo $foo->lookup("hi");
-echo $foo->lookup("hi");
-echo $foo->lookup("there");
-echo $foo->lookup("blarb");
+$foo = new Bloom(216553, 0.01);
+echo $foo->get_size();
+echo "\n";
+echo $foo->get_runs();
