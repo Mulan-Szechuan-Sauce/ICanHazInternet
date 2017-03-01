@@ -2,9 +2,9 @@
 
 SERV=$1
 
+RES=$(curl $SERV)
 while :
 do
-	RES=$(curl $SERV)
 	# So we can kill the clients
 	if [ "$RES" =~ ^TERMINATE$ ]
 	then
