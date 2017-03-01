@@ -53,5 +53,10 @@ function murmurhash3_int($key,$seed=0){
 }
 
 function murmurhash3($key,$seed=0){
-  return base_convert(murmurhash3_int($key,$seed),10,32);
+    return murmurhash3_int($key,$seed);
+    //return base_convert(murmurhash3_int($key,$seed),10,32);
+}
+
+function murmurhash3_str($key,$seed=0){
+    return base_convert(murmurhash3_int($key,$seed),10,32);
 }
