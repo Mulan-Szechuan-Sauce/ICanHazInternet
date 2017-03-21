@@ -5,10 +5,11 @@ class Bloom {
     private $size;
     private $runs;
 
-    function __construct($num_items, $false_per) {
-        $this->size = ceil(-$num_items*log($false_per) / pow(log(2), 2));
-        $this->runs = ceil(($this->size/$num_items) * log(2));
+    function __construct($num_items, $false_per=0.01) {
+        $this->size = (int)ceil(-$num_items*log($false_per) / pow(log(2), 2));
+        $this->runs = (int)ceil(($this->size/$num_items) * log(2));
         $this->arr = new SplFixedArray($this->size);
+
         //$this->size = $s;
         //$this->runs = $r;
     }
@@ -20,6 +21,8 @@ class Bloom {
     function add($thing) {
         $result = $thing;
         foreach (range(0, $this->runs) as $seed) {
+            $result = fmod(hexdec(sha1($result)), $this->size);
+            $result = fmod(hexdec(md5($result)), $this->size);
             $result = murmurhash3($result, $seed) % $this->size;
             $this->arr[$result] = 1;
         }
@@ -28,6 +31,8 @@ class Bloom {
     function lookup($thing) {
         $result = $thing;
         foreach (range(0, $this->runs) as $seed) {
+            $result = fmod(hexdec(sha1($result)), $this->size);
+            $result = fmod(hexdec(md5($result)), $this->size);
             $result = murmurhash3($result, $seed) % $this->size;
             if ($this->arr[$result] == 0) return 0;
             else return 1;
