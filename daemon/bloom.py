@@ -1,10 +1,9 @@
-import math
 from bitarray import bitarray
+import math
 import mmh3
 
-class BloomFilter:
+class URLFilter:
     def __init__(self, num_items, false_per=0.01):
-
         temp = -num_items*math.log(false_per) / pow(math.log(2), 2)
         self.size = math.ceil(temp)
         temp = (self.size/num_items) * math.log(2)
