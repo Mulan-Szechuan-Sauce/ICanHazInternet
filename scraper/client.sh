@@ -3,6 +3,7 @@
 # Seconds before asking the server for more URLs
 WAIT_TIME=5
 URL_CACHE_FILE="/tmp/icanhazinternet.cache"
+URL_CACHE_SIZE=10000
 
 if [ $# -ne 1 ]; then
     echo "Usage: $0 <scraper url>"
@@ -20,6 +21,13 @@ strip_cached() {
             echo $URL
         fi
     done | tee -a $URL_CACHE_FILE
+
+    # Clear half the cache after some number of URLs are stored
+    if [ `wc -l $URL_CACHE_FILE | cut -d' ' -f1` -ge $URL_CACHE_SIZE ]; then
+        let tail_amount=$URL_CACHE_SIZE/2
+        tail -$tail_amount $URL_CACHE_FILE > $URL_CACHE_FILE.trimmed
+        mv $URL_CACHE_FILE.trimmed $URL_CACHE_FILE
+    fi
 }
 
 RES=$(curl -s $SERV)
