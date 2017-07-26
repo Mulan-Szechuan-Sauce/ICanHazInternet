@@ -1,0 +1,6 @@
+# Python garbage
+__pycache__
+# Emacs garbage
+.#*
+# Vim garbage
+*.sw?
