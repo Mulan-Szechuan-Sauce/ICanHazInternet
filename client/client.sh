@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Seconds before asking the server for more URLs
-WAIT_TIME=5
+WAIT_TIME=0.5
 URL_CACHE_FILE="/tmp/icanhazinternet.cache"
 URL_CACHE_SIZE=10000
 
@@ -30,7 +30,7 @@ strip_cached() {
     fi
 }
 
-RES=$(curl -s $SERV)
+RES=$(curl -sX POST $SERV)
 while :; do
 	# So we can kill the clients
 	if [[ "$RES" =~ ^TERMINATE$ ]]; then
