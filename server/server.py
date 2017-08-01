@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
+import argparse
 import cgi
 import sqlite3
 from bloom_filter import BloomFilter
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-HOST = '192.168.0.104'
-PORT = 1337
 BLOOM = BloomFilter(10000)
 URLS_PER_CLIENT = 1
 TODO = ['google.com']
@@ -52,10 +51,14 @@ class ICanHasHandle(BaseHTTPRequestHandler):
                 BLOOM.add(url)
                 TODO.append(url)
 
-
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--host', dest='host', type=str, default='localhost')
+    parser.add_argument('--port', dest='port', type=int, default=1337)
+    args = parser.parse_args()
+
     print('Getting all interwebs!')
-    server_address = (HOST, PORT)
+    server_address = (args.host, args.port)
     DB.execute('CREATE TABLE IF NOT EXISTS urls (url text primary key)')
     try:
         HTTPServer(server_address, ICanHasHandle).serve_forever()
