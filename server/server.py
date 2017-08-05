@@ -9,7 +9,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 BLOOM = BloomFilter(10000)
 URLS_PER_CLIENT = 1
 TODO = ['google.com']
-DB = sqlite3.connect('icanhasdatabase').cursor()
+DB = sqlite3.connect('icanhazdatabase').cursor()
 
 class ICanHasHandle(BaseHTTPRequestHandler):
     def do_GET(self):
