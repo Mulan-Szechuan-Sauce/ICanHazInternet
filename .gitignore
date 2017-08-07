@@ -6,3 +6,4 @@ __pycache__
 *.sw?
 # Program garbage
 icanhazdatabase*
+node_modules/
