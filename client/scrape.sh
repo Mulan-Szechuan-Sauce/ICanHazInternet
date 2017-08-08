@@ -2,8 +2,10 @@
 
 # Scrapes the URLs given in STDIN
 
+PHANTOMJS=`dirname $0`/../node_modules/phantomjs/bin/phantomjs
+
 scrapePage() {
-	curl -s -m 5 -L $1 | \
+	$PHANTOMJS `dirname $0`/phantom_curl.js $1 | \
 		grep -o '<a \+href *= *['"'"'"][^"'"'"']*['"'"'"]' | \
 		sed -e 's/^<a \+href *= *["'"'"']//' -e 's/["'"'"']$//' | \
 		sed '/^#/ d' | \
