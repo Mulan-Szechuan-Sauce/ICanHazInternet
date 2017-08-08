@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Seconds before asking the server for more URLs
-WAIT_TIME=0.5
+WAIT_TIME=5
 URL_CACHE_FILE="/tmp/icanhazinternet.cache"
 URL_CACHE_SIZE=10000
 
@@ -36,9 +36,12 @@ while :; do
 	if [[ "$RES" =~ ^TERMINATE$ ]]; then
 		exit
 	fi
+
+    # Only wait if there are no URL results. (prevents self-DDoS)
+    [[ -z "$(echo $RES | tr -d ' \n\t')" ]] && sleep $WAIT_TIME
+
 	NEWRES=$(echo $RES | strip_cached | \
 		`dirname $0`/scrape.sh | strip_cached | \
 		curl -sX POST --data-binary @- $SERV)
 	RES=$NEWRES
-	sleep $WAIT_TIME
 done
