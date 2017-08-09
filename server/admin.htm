@@ -1,0 +1,32 @@
+<html>
+<body onload="loadInfo()">
+    <h1>Control Panel</h1>
+    <ul id='todo_urls'></ul>
+</body>
+<script>
+function loadInfo() {
+    var req = new XMLHttpRequest();
+
+    req.onreadystatechange = function() {
+        if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
+            var json = JSON.parse(req.responseText);
+            var todoHTML = '';
+
+            for (var i = 0; i < json['todo'].length; i++) {
+                var url = json['todo'][i];
+                todoHTML += '<li>' + url  + '</li>';
+            }
+
+            document.getElementById("todo_urls").innerHTML = todoHTML;
+        }
+    };
+
+
+    console.log('foo');
+    req.open("GET", "/admin/info", true);
+    req.send();
+}
+
+setInterval(loadInfo, 1000);
+</script>
+</html>
